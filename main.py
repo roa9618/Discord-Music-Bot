@@ -12,12 +12,15 @@ async def on_ready() :
 
 @bot.command()
 async def 입장(ctx) :
-    channel = ctx.author.voice.channel
-    await channel.connect()
+    if ctx.author.voice and ctx.author.voice.channel :
+        channel = ctx.author.voice.channel
+        await channel.connect()
+    else :
+        await ctx.send("채널에 연결되지 않았습니다.")
 
 @bot.command()
 async def 퇴장(ctx) :
-    await ctx.guild.voice_client.disconnect()
+    await bot.voice_clients[0].disconnect()
 
 @bot.command()
 async def test(ctx) :
