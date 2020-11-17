@@ -1,4 +1,6 @@
 import discord
+import asyncio
+import youtube_dl
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix = '/', help_command = None)  # 명령어 접두어 설정
@@ -21,9 +23,5 @@ async def 입장(ctx) :
 @bot.command()
 async def 퇴장(ctx) :
     await bot.voice_clients[0].disconnect()
-
-@bot.command()
-async def test(ctx) :
-    await ctx.send("test 123")
 
 bot.run(token)
