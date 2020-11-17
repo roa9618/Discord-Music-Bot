@@ -24,4 +24,8 @@ async def 입장(ctx) :
 async def 퇴장(ctx) :
     await bot.voice_clients[0].disconnect()
 
+@bot.command()
+async def 에코(args) :
+    await bot.say(args)
+
 bot.run(token)
