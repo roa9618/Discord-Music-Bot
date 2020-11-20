@@ -13,7 +13,7 @@ async def on_ready() :
     await bot.change_presence(status = discord.Status.online, activity = game)
 
 @bot.command()
-async def 입장(ctx) :
+async def join(ctx) :
     if ctx.author.voice and ctx.author.voice.channel :
         channel = ctx.author.voice.channel
         await channel.connect()
@@ -21,7 +21,7 @@ async def 입장(ctx) :
         await ctx.send("채널에 연결되지 않았습니다.")
 
 @bot.command()
-async def 퇴장(ctx) :
+async def leave(ctx) :
     await bot.voice_clients[0].disconnect()
 
 bot.run(token)
