@@ -48,6 +48,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
 bot = commands.Bot(command_prefix = '/', help_command = None) # 명령어 접두어 설정
 token = 'Nzc4Mjk5NzEzMzY3NzAzNjQy.X7P-Fw.ABr7fsb-jsr-7Npfru7X-smzzxk' # Discord Rhooa Music bot 토큰값(※노출금지)
 status = ['Jamming out to music!', '/help', 'RhooaMusic Beta Ver']
+queue_ = []
 
 @bot.event
 async def on_ready() :
@@ -61,8 +62,7 @@ async def ping(ctx) :
     await ctx.send(embed = embed)
 
 @bot.command()
-async def play(ctx) :
-    url = ctx.message.content[6:]
+async def join(ctx) :
     if not ctx.message.author.voice :
         embed = discord.Embed(description = "You are not connected to a voice channel", color = 0xff0000)
         embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#0998", icon_url = ctx.message.author.avatar_url)
@@ -71,19 +71,58 @@ async def play(ctx) :
     else :
         channel = ctx.message.author.voice.channel
     await channel.connect()
+
+@bot.command()
+async def leave(ctx) :
+    voice_client = ctx.message.guild.voice_client
+    await voice_client.disconnect()
+
+@bot.command()
+async def play(ctx) :
+    global queue_
     server = ctx.message.guild
     voice_channel = server.voice_client
     async with ctx.typing() :
-        player = await YTDLSource.from_url(url, loop = bot.loop)
+        player = await YTDLSource.from_url(queue_[0], loop = bot.loop)
         voice_channel.play(player, after = lambda e : print('Player error : %s' %e) if e else None)
+        del(queue_[0])
     embed = discord.Embed(title = ':headphones:Now plyaing', description = "{}".format(player.title), color = 0xa9dbea)
     embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#0998", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
 
 @bot.command()
-async def stop(ctx) :
-    voice_client = ctx.message.guild.voice_client
-    await voice_client.disconnect()
+async def pause(ctx) :
+    server = ctx.message.guild
+    voice_channel = server.voice_client
+    voice_channel.pause()
+
+@bot.command()
+async def resume(ctx) :
+    server = ctx.message.guild
+    voice_channel = server.voice_client
+    voice_channel.resume()
+
+@bot.command()
+async def queue(ctx) :
+    global queue_
+    url = ctx.message.content[7:]
+    queue_.append(url)
+    await ctx.send(f"`{url}` added to queue!")
+
+@bot.command()
+async def remove(ctx, number) :
+    global queue_
+    number = int(number)
+    number -= 1
+    try :
+        del(queue_[int(number)])
+        await ctx.send(f"Your queue is now `{queue_}!`")
+    except :
+        await ctx.send('Your queue is either **empty** or the index is **out of range**')
+
+@bot.command()
+async def view(ctx) :
+    await ctx.send(f"Your queue is now `{queue_}!`")
 
 @tasks.loop(seconds = 20)
 async def change_status() :
