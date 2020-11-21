@@ -128,7 +128,10 @@ async def view(ctx) :
 @bot.command()
 async def shuffle(ctx) :
     global queue_
-    random.shuffle(queue_)
+    i = 0
+    while i < 4 :
+        random.shuffle(queue_)
+        i += 1
     await ctx.send(f"Successfully your queue was mixed!")
 
 @tasks.loop(seconds = 20)
