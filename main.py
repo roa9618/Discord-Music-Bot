@@ -20,9 +20,7 @@ ytdl_format_options = {
     'source_address' : '0.0.0.0' # bind to ipv4 since ipv6 addresses cause issues sometimes
 }
 
-ffmpeg_options = {
-    'options' : '-vn'
-}
+ffmpeg_options = {'options' : '-vn'}
 
 ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
 
@@ -58,12 +56,16 @@ async def on_ready() :
 
 @bot.command()
 async def ping(ctx) :
-    await ctx.send(f'**Pong!** Latency : {round(bot.latency * 1000)}ms')
+    embed = discord.Embed(title = ":ping_pong:Pong!", description = "Latency : `{}`ms".format(round(bot.latency * 1000)), color = 0xa9dbea)
+    embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#0998", icon_url = ctx.message.author.avatar_url)
+    await ctx.send(embed = embed)
 
 @bot.command()
 async def play(ctx, url) :
     if not ctx.message.author.voice :
-        await ctx.send('You are not connected to a voice channel')
+        embed = discord.Embed(description = "You are not connected to a voice channel", color = 0xff0000)
+        embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#0998", icon_url = ctx.message.author.avatar_url)
+        await ctx.send(embed = embed)
         return
     else :
         channel = ctx.message.author.voice.channel
@@ -73,7 +75,9 @@ async def play(ctx, url) :
     async with ctx.typing() :
         player = await YTDLSource.from_url(url, loop = bot.loop)
         voice_channel.play(player, after = lambda e : print('Player error : %s' %e) if e else None)
-    await ctx.send(f'**Now playing : ** {player.title}')
+    embed = discord.Embed(title = ':headphones:Now plyaing', description = "{}".format(player.title), color = 0xa9dbea)
+    embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#0998", icon_url = ctx.message.author.avatar_url)
+    await ctx.send(embed = embed)
 
 @bot.command()
 async def stop(ctx) :
