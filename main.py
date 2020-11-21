@@ -61,7 +61,8 @@ async def ping(ctx) :
     await ctx.send(embed = embed)
 
 @bot.command()
-async def play(ctx, url) :
+async def play(ctx) :
+    url = ctx.message.content[6:]
     if not ctx.message.author.voice :
         embed = discord.Embed(description = "You are not connected to a voice channel", color = 0xff0000)
         embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#0998", icon_url = ctx.message.author.avatar_url)
