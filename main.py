@@ -2,6 +2,7 @@ import discord
 import youtube_dl
 from discord.ext import commands, tasks
 from random import choice
+import random
 import asyncio
 
 youtube_dl.utils.bug_reports_message = lambda : ''
@@ -25,7 +26,7 @@ ffmpeg_options = {'options' : '-vn'}
 ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
 
 class YTDLSource(discord.PCMVolumeTransformer):
-    def __init__(self, source, *, data, volume=0.5):
+    def __init__(self, source, *, data, volume = 0.5):
         super().__init__(source, volume)
 
         self.data = data
@@ -123,6 +124,12 @@ async def remove(ctx, number) :
 @bot.command()
 async def view(ctx) :
     await ctx.send(f"Your queue is now `{queue_}!`")
+
+@bot.command()
+async def shuffle(ctx) :
+    global queue_
+    random.shuffle(queue_)
+    await ctx.send(f"Successfully your queue was mixed!")
 
 @tasks.loop(seconds = 20)
 async def change_status() :
