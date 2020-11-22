@@ -108,7 +108,9 @@ async def queue(ctx) :
     global queue_
     url = ctx.message.content[7:]
     queue_.append(url)
-    await ctx.send(f"`{url}` added to queue!")
+    embed = discord.Embed(description = "queued `{}`".format(url), color = 0xa9dbea)
+    embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
+    await ctx.send(embed = embed)
 
 @bot.command()
 async def remove(ctx, number) :
@@ -117,13 +119,19 @@ async def remove(ctx, number) :
     number -= 1
     try :
         del(queue_[int(number)])
-        await ctx.send(f"Your queue is now `{queue_}!`")
+        embed = discord.Embed(description = "Removed {}".format(number), color = 0xa9dbea)
+        embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
+        await ctx.send(embed = embed)
     except :
-        await ctx.send('Your queue is either **empty** or the index is **out of range**')
+        embed = discord.Embed(description = "Your queue is either **empty** or the index is **out of range**", color = 0xff0000)
+        embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
+        await ctx.send(embed = embed)
 
 @bot.command()
 async def view(ctx) :
-    await ctx.send(f"Your queue is now `{queue_}!`")
+    embed = discord.Embed(description = "Your queue is now `{}!`".format(queue_), color = 0xa9dbea)
+    embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
+    await ctx.send(embed = embed)
 
 @bot.command()
 async def shuffle(ctx) :
@@ -132,7 +140,9 @@ async def shuffle(ctx) :
     while i < 4 :
         random.shuffle(queue_)
         i += 1
-    await ctx.send(f"Successfully your queue was mixed!")
+    embed = discord.Embed(description = "Successfully your queue was mixed!", color = 0xa9dbea)
+    embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
+    await ctx.send(embed = embed)
 
 @tasks.loop(seconds = 20)
 async def change_status() :
