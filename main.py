@@ -90,7 +90,7 @@ async def play(ctx) :
     embed = discord.Embed(title = ':headphones:Now plyaing', description = "{}".format(player.title), color = 0xa9dbea)
     embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
-
+    
 @bot.command()
 async def pause(ctx) :
     server = ctx.message.guild
