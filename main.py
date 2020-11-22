@@ -106,7 +106,7 @@ async def resume(ctx) :
 @bot.command()
 async def add(ctx) :
     global queue_
-    url = ctx.message.content[7:]
+    url = ctx.message.content[7:] + " lyrics"
     player = await YTDLSource.from_url(url, loop = bot.loop)
     queue_.append(player.title)
     embed = discord.Embed(description = "queued `{}`\n".format(player.title), color = 0xa9dbea)
@@ -119,10 +119,10 @@ async def remove(ctx, number) :
     number = int(number)
     number -= 1
     try :
-        del(queue_[int(number)])
-        embed = discord.Embed(description = "Removed {}".format(queue_[number]), color = 0xa9dbea)
+        embed = discord.Embed(description = "Removed {}".format(queue_[int(number)]), color = 0xa9dbea)
         embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
         await ctx.send(embed = embed)
+        del(queue_[int(number)])
     except :
         embed = discord.Embed(description = "Your queue is either **empty** or the index is **out of range**", color = 0xff0000)
         embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
