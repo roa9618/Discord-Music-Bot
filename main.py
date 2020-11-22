@@ -104,11 +104,12 @@ async def resume(ctx) :
     voice_channel.resume()
 
 @bot.command()
-async def queue(ctx) :
+async def add(ctx) :
     global queue_
     url = ctx.message.content[7:]
-    queue_.append(url)
-    embed = discord.Embed(description = "queued `{}`".format(url), color = 0xa9dbea)
+    player = await YTDLSource.from_url(url, loop = bot.loop)
+    queue_.append(player.title)
+    embed = discord.Embed(description = "queued `{}`\n".format(player.title), color = 0xa9dbea)
     embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
 
@@ -119,7 +120,7 @@ async def remove(ctx, number) :
     number -= 1
     try :
         del(queue_[int(number)])
-        embed = discord.Embed(description = "Removed {}".format(number), color = 0xa9dbea)
+        embed = discord.Embed(description = "Removed {}".format(queue_[number]), color = 0xa9dbea)
         embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
         await ctx.send(embed = embed)
     except :
@@ -128,7 +129,13 @@ async def remove(ctx, number) :
         await ctx.send(embed = embed)
 
 @bot.command()
-async def view(ctx) :
+async def queue(ctx) :
+    embed = discord.Embed(description = "Your queue is now `{}!`".format(queue_), color = 0xa9dbea)
+    embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
+    await ctx.send(embed = embed)
+
+@bot.command()
+async def q(ctx) :
     embed = discord.Embed(description = "Your queue is now `{}!`".format(queue_), color = 0xa9dbea)
     embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
