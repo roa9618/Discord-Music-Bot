@@ -47,7 +47,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data = data)
 
 bot = commands.Bot(command_prefix = '/', help_command = None) # 명령어 접두어 설정
-token = 'Nzc4Mjk5NzEzMzY3NzAzNjQy.X7P-Fw.ABr7fsb-jsr-7Npfru7X-smzzxk' # Discord Rhooa Music bot 토큰값(※노출금지)
+token = 'Nzc5OTQ0MjgwMjc4MDQwNTk2.X7n5tw.b6leXeh_Sc7hMdUgYjhBvngvp10' # Discord Rhooa Music bot 토큰값(※노출금지)
 status = ['Jamming out to music!', '/help', 'RhooaMusic Beta Ver']
 queue_ = []
 
@@ -59,14 +59,14 @@ async def on_ready() :
 @bot.command()
 async def ping(ctx) :
     embed = discord.Embed(title = ":ping_pong:Pong!", description = "Latency : `{}`ms".format(round(bot.latency * 1000)), color = 0xa9dbea)
-    embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#0998", icon_url = ctx.message.author.avatar_url)
+    embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
 
 @bot.command()
 async def join(ctx) :
     if not ctx.message.author.voice :
         embed = discord.Embed(description = "You are not connected to a voice channel", color = 0xff0000)
-        embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#0998", icon_url = ctx.message.author.avatar_url)
+        embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
         await ctx.send(embed = embed)
         return
     else :
@@ -88,7 +88,7 @@ async def play(ctx) :
         voice_channel.play(player, after = lambda e : print('Player error : %s' %e) if e else None)
         del(queue_[0])
     embed = discord.Embed(title = ':headphones:Now plyaing', description = "{}".format(player.title), color = 0xa9dbea)
-    embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#0998", icon_url = ctx.message.author.avatar_url)
+    embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
 
 @bot.command()
