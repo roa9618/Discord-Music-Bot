@@ -83,13 +83,18 @@ async def play(ctx) :
     global queue_
     server = ctx.message.guild
     voice_channel = server.voice_client
-    async with ctx.typing() :
-        player = await YTDLSource.from_url(queue_[0], loop = bot.loop)
-        voice_channel.play(player, after = lambda e : print('Player error : %s' %e) if e else None)
-        del(queue_[0])
-    embed = discord.Embed(title = ':headphones:Now plyaing', description = "{}".format(player.title), color = 0xa9dbea)
-    embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
-    await ctx.send(embed = embed)
+    try :
+        async with ctx.typing() :
+            player = await YTDLSource.from_url(queue_[0], loop = bot.loop)
+            voice_channel.play(player, after = lambda e : print('Player error : %s' %e) if e else None)
+            del(queue_[0])
+        embed = discord.Embed(title = ':headphones:Now plyaing', description = "{}".format(player.title), color = 0xa9dbea)
+        embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
+        await ctx.send(embed = embed)
+    except :
+        embed = discord.Embed(description = "Your queue is either **empty** or the index is **out of range**", color = 0xff0000)
+        embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
+        await ctx.send(embed = embed)
 
 @bot.command()
 async def pause(ctx) :
