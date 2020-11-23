@@ -91,7 +91,7 @@ async def play(ctx) :
         embed = discord.Embed(title = ':headphones:Now plyaing', description = "{}".format(player.title), color = 0xa9dbea)
         embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
         await ctx.send(embed = embed)
-    except :
+    except IndexError :
         embed = discord.Embed(description = "Your queue is either **empty** or the index is **out of range**", color = 0xff0000)
         embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
         await ctx.send(embed = embed)
