@@ -26,7 +26,7 @@ ffmpeg_options = {'options' : '-vn'}
 ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
 
 class YTDLSource(discord.PCMVolumeTransformer):
-    def __init__(self, source, *, data, volume = 0.5):
+    def __init__(self, source, *, data, volume = 0.5) :
         super().__init__(source, volume)
 
         self.data = data
@@ -35,7 +35,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         self.url = data.get('url')
 
     @classmethod
-    async def from_url(cls, url, *, loop = None, stream = False):
+    async def from_url(cls, url, *, loop = None, stream = False) :
         loop = loop or asyncio.get_event_loop()
         data = await loop.run_in_executor(None, lambda : ytdl.extract_info(url, download = not stream))
 
@@ -90,7 +90,7 @@ async def play(ctx) :
     embed = discord.Embed(title = ':headphones:Now plyaing', description = "{}".format(player.title), color = 0xa9dbea)
     embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
-    
+
 @bot.command()
 async def pause(ctx) :
     server = ctx.message.guild
@@ -106,10 +106,14 @@ async def resume(ctx) :
 @bot.command()
 async def add(ctx) :
     global queue_
-    url = ctx.message.content[7:] + " lyrics"
+    url = ctx.message.content[5:]
+    if url[5:10] == 'http:' or url[5:11] == 'https:' :
+        url = ctx.message.content[5:]
+    else :
+        url = ctx.message.content[5:] + " Lyrics"
     player = await YTDLSource.from_url(url, loop = bot.loop)
     queue_.append(player.title)
-    embed = discord.Embed(description = "queued `{}`\n".format(player.title), color = 0xa9dbea)
+    embed = discord.Embed(description = "queued **{}**\n".format(player.title), color = 0xa9dbea)
     embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
     await ctx.send(embed = embed)
 
@@ -119,7 +123,7 @@ async def remove(ctx, number) :
     number = int(number)
     number -= 1
     try :
-        embed = discord.Embed(description = "Removed {}".format(queue_[int(number)]), color = 0xa9dbea)
+        embed = discord.Embed(description = "Removed **{}**".format(queue_[int(number)]), color = 0xa9dbea)
         embed.set_footer(text = f"{ctx.message.author.name} | Rhmusic#4931", icon_url = ctx.message.author.avatar_url)
         await ctx.send(embed = embed)
         del(queue_[int(number)])
