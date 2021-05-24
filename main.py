@@ -47,7 +47,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data = data)
 
 bot = commands.Bot(command_prefix = '/', help_command = None) # 명령어 접두어 설정
-token = 'Nzc5OTQ0MjgwMjc4MDQwNTk2.X7n5tw.b6leXeh_Sc7hMdUgYjhBvngvp10' # Discord Rhooa Music bot 토큰값(※노출금지)
+token = '' # Discord Rhooa Music bot 토큰값(※노출금지)
 status = ['Jamming out to music!', '/help', 'RhooaMusic Beta Ver']
 queue_ = []
 
